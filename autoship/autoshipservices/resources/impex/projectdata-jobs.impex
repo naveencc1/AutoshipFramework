@@ -1,0 +1,9 @@
+
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
+;processAutoshipCartCronjob;processAutoshipCartCronjob
+
+INSERT_UPDATE AutoshipProcessCronJob;code[unique=true];job(code);sessionLanguage(isocode)[default=en]
+;processAutoshipCartCronjob;processAutoshipCartCronjob;
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];second;minute;hour;day;month;year;relative;active;maxAcceptableDelay
+;processAutoshipCartCronjob;0;0;0;-1;-1;-1;false;true;-1

@@ -1,0 +1,18 @@
+<action-definition id="com.autoshipbackoffice.actions.ProcessAutoshipAction" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+
+	<name>ProcessAutoshipAction</name>
+	<description>ProcessAutoshipAction</description>
+	<author>Naveen</author>
+	<version>0.1</version>	
+
+	<actionClassName>com.autoshipbackoffice.actions.ProcessAutoshipAction</actionClassName>
+
+	<inputType>com.autoshipservices.model.AutoshipCartModel</inputType>
+	<outputType>java.lang.String</outputType>
+
+	<iconUri>images/process-cart-active.png</iconUri>
+	<iconHoverUri>images/process-cart-hover.png</iconHoverUri>
+	<iconDisabledUri>images/process-cart-inactive.png</iconDisabledUri>
+
+</action-definition>

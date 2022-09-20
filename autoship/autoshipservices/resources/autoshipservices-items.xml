@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2018 SAP SE or an SAP affiliate company. All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+			
+	<collectiontypes>
+ 		<collectiontype elementtype="Product" code="ProductList" autocreate="true" type="list"/>
+ 	</collectiontypes>
+	
+	<enumtypes>
+		<enumtype code="AutoShipStatus" autocreate="true" generate="true">
+			<value code="ACTIVE" />
+			<value code="DRAFT" />
+			<value code="SAVED"></value>
+		</enumtype>
+	</enumtypes>
+	<relations>
+		<relation code="BaseSite2AutoshipProcessCronJob" generate="true"
+				localized="false" autocreate="true">
+				<sourceElement type="BaseSite" cardinality="many"
+					qualifier="sites">
+					<modifiers read="true" write="true" search="true"
+						optional="true" />
+				</sourceElement>
+				<targetElement type="AutoshipProcessCronJob" cardinality="one"
+					qualifier="autoshipProcessCronJob">
+					<modifiers read="true" write="true" search="true"
+						optional="true" />
+				</targetElement>
+		</relation>
+	</relations>
+	<itemtypes>
+	
+		<!-- Autoship Cart -->
+		
+		<itemtype generate="true"
+		   code="AutoshipCart"
+		   extends="Cart"
+		   autocreate="true">
+			<attributes>
+				<attribute qualifier="frequency" type="java.lang.Integer">
+					<description>Frequency of Autoship.</description>
+					<persistence type="property"/>
+                    <modifiers read="true" write="true" optional="true"/>
+				</attribute>
+				<attribute qualifier="nextRunDate" type="java.util.Date">
+					<description>Next Run Date</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="lastRunDate" type="java.util.Date">
+					<description>Last Run Date</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="autoShipStatus" type="AutoShipStatus">
+					<description>Autoship Status</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="tryOnceProducts" type="ProductList">
+					<description>try once products.</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		
+		<!-- AutoshipConfig -->
+		
+		<itemtype generate="true"
+		   autocreate="true" 
+		   code="AutoshipConfig"
+		   extends="GenericItem">
+		   <description>AutoConfig Will hold the Autoship related config attributes.</description>
+			<deployment table="AutoshipConfig" typecode="23421" />
+			<attributes>
+				<attribute qualifier="maxAllowedCarts" type="java.lang.Integer">
+					<description>Maximum Allowed Carts</description>
+					<persistence type="property"/>
+                    <modifiers read="true" write="true" optional="true"/>
+				</attribute>
+			</attributes>
+		</itemtype>
+		
+		<itemtype code="BaseSite" autocreate="false" generate="false">
+				<attributes>
+					<attribute type="AutoshipConfig" qualifier="autoshipConfig">
+						<persistence type="property" />
+						<modifiers read="true" write="true" optional="true"/>
+						<description>AutoshipConfig</description>
+					</attribute>
+				</attributes>
+		</itemtype>
+		
+		<!-- AbstractOrderEntry -->
+		
+		<itemtype code="AbstractOrderEntry" generate="false"
+				   autocreate="false">
+			<attributes>
+				<attribute qualifier="tryOnce" type="java.lang.Boolean">
+					<description>Has Try Once product</description>
+					<modifiers read="true" write="true" search="true" optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>		   
+		</itemtype>
+		
+		<itemtype code="AutoshipProcessCronJob" autocreate="true"
+				generate="true" extends="CronJob">
+		</itemtype>
+	</itemtypes>
+</items>

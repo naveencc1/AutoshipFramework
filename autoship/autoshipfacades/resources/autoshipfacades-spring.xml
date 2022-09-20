@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2018 SAP SE or an SAP affiliate company. All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+    <bean id="autoshipfacadesSystemSetup" class="com.autoshipfacades.setup.AutoshipfacadesSystemSetup">
+        <!-- constructor arg injection example -->
+        <constructor-arg ref="autoshipfacadesService"/>
+    </bean>
+
+    <bean id="autoshipfacadesService" class="com.autoshipfacades.service.impl.DefaultAutoshipfacadesService">
+        <!-- setter injection example -->
+        <property name="modelService" ref="modelService"/>
+        <property name="mediaService" ref="mediaService"/>
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+    
+    <bean id="autoshipCartPopulator" class="com.autoshipfacades.populators.AutoshipCartPopulator"/>
+    
+    <bean parent="modifyPopulatorList">
+		<property name="list" ref="cartConverter"/>
+		<property name="add" ref="autoshipCartPopulator"/>
+	</bean>
+	
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="extendedCartConverter"/>
+		<property name="add" ref="autoshipCartPopulator"/>
+	</bean>	
+	
+	<bean id="autoshipOrderEntryPopulator" class="com.autoshipfacades.populators.AutoshipOrderEntryPopulator"/>
+	
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="orderEntryConverter"/>
+		<property name="add" ref="autoshipOrderEntryPopulator"/>
+	</bean>
+	
+	<alias name="defaultAutoshipCheckoutFacade" alias="autoshipCheckoutFacade"/>
+	<bean id="defaultAutoshipCheckoutFacade" class="com.autoshipfacades.facades.impl.DefaultAutoshipCheckoutFacade" parent="defaultCheckoutFacade">
+		<property name="autoshipCheckoutService" ref="defaultAutoshipCheckoutService"/>
+	</bean>
+	
+	<alias name="defaultAutoshipFacade" alias="autoshipFacade"/>
+	<bean id="defaultAutoshipFacade" class="com.autoshipfacades.facades.impl.DefaultAutoshipFacade">
+		<property name="baseSiteService" ref="baseSiteService"/>
+        <property name="userService" ref="userService"/>
+        <property name="autoshipService" ref="autoshipService"/>
+        <property name="cartConverter" ref="cartConverter"/>
+        <property name="cartService" ref="cartService"/>
+        <property name="customerAccountService" ref="customerAccountService"/>
+        <property name="baseStoreService" ref="baseStoreService"/>
+	</bean>
+	
+	<alias name="defaultAutoshipCartFacade" alias="autoshipCartFacade"/>
+	<bean id="defaultAutoshipCartFacade" class="com.autoshipfacades.facades.impl.DefaultAutoshipCartFacade" parent="cartFacade">
+	</bean>
+	
+	<alias name="defaultAutoshipScheduleFacade" alias="autoshipScheduleFacade"/>
+	<bean id="defaultAutoshipScheduleFacade" class="com.autoshipfacades.facades.impl.DefaultAutoshipScheduleFacade">
+        <!-- setter injection example -->
+        <property name="modelService" ref="modelService"/>
+        <property name="cartService" ref="cartService"/>
+        <property name="cartConverter" ref="cartConverter"/>
+    </bean>
+</beans>
